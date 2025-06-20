@@ -12,22 +12,31 @@ app.use(express.json())
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bejl412.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
 });
 
 async function run() {
-  try {
-   
-    // Send a ping to confirm a successful connection
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    //await client.close();
-  }
+    try {
+
+        const database = client.db("foodDB");
+        const foodCollection = database.collection("foods");
+
+       //creat a new food item
+        app.post('/foods', async (req, res) => {
+            const food = req.body;
+            const result = await foodCollection.insertOne(food);
+            res.send(result);
+        })
+        // Send a ping to confirm a successful connection
+        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    } finally {
+        // Ensures that the client will close when you finish/error
+        //await client.close();
+    }
 }
 run().catch(console.dir);
 
@@ -44,9 +53,9 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
-  res.send('Foodie Server is running')
+    res.send('Foodie Server is running')
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+    console.log(`Example app listening on port ${port}`)
 })
