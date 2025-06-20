@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
@@ -49,9 +49,21 @@ async function run() {
         //get one food item by id
         app.get('/foods/:id', async (req, res) => {
             const id = req.params.id;
-            const query = { _id: new MongoClient.ObjectId(id) };
+            const query = { _id: new ObjectId(id) };
             const food = await foodCollection.findOne(query);
             res.send(food);
+        });
+
+
+
+
+        //food request related APIs
+        const foodRequestCollection = database.collection("foodRequests");
+        //create a new food request
+        app.post('/food-request', async (req, res) => {
+            const foodRequest = req.body;
+            const result = await foodRequestCollection.insertOne(foodRequest);
+            res.send(result);
         });
         // Send a ping to confirm a successful connection
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
