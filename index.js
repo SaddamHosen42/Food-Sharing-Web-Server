@@ -53,7 +53,19 @@ async function run() {
             const food = await foodCollection.findOne(query);
             res.send(food);
         });
-
+        //modify a food status item by id
+        app.patch('/update-status/:id', async (req, res) => {
+            const id = req.params.id;
+            const status = req.body.status;
+            const query = { _id: new ObjectId(id) };
+            const updateDoc = {
+                $set: {
+                    status: status
+                },
+            };
+            const result = await foodCollection.updateOne(query, updateDoc);
+            res.send(result);
+        });
 
 
 
