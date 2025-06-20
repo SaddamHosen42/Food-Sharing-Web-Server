@@ -46,6 +46,13 @@ async function run() {
             res.send(availableFoods);
         });
 
+        //get one food item by id
+        app.get('/foods/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new MongoClient.ObjectId(id) };
+            const food = await foodCollection.findOne(query);
+            res.send(food);
+        });
         // Send a ping to confirm a successful connection
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
