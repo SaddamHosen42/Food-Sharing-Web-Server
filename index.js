@@ -68,8 +68,8 @@ async function run() {
         });
 
 
-
         //food request related APIs
+
         const foodRequestCollection = database.collection("foodRequests");
         //create a new food request
         app.post('/food-request', async (req, res) => {
@@ -77,6 +77,20 @@ async function run() {
             const result = await foodRequestCollection.insertOne(foodRequest);
             res.send(result);
         });
+
+        //get all food requests by requester email
+        app.get('/food-requests', async (req, res) => {
+            const email = req.query.email;
+            const query={};
+            if (email) {
+                query.requesterEmail = email; // Filter by email if provided
+            }
+            const foodRequests = await foodRequestCollection.find(query).toArray();
+            res.send(foodRequests);
+        });
+
+     
+
         // Send a ping to confirm a successful connection
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
