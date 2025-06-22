@@ -33,9 +33,16 @@ async function run() {
             res.send(result);
         });
 
-        //get all food items
+        //get all food items and get added by user
         app.get('/foods', async (req, res) => {
-            const foods = await foodCollection.find().toArray();
+            const email = req.query.email;
+            //console.log(`Querying foods for email: ${email}`);
+            
+            const query = {};
+            if (email) {
+                query.donorEmail = email; 
+            }
+            const foods = await foodCollection.find(query).toArray();
             res.send(foods);
             // console.log(foods);
         });
