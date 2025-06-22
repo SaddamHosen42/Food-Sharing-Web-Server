@@ -47,6 +47,19 @@ async function run() {
             // console.log(foods);
         });
 
+        //update a food item by id
+        app.put('/foods/:id', async (req, res) => {
+            const id = req.params.id;
+            const updatefood = req.body;
+            const query = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: updatefood,
+            };
+            const result = await foodCollection.updateOne(query, updateDoc, options);
+            res.send(result);
+        });
+
         //get only available food items
         app.get('/available-foods', async (req, res) => {
             const availableFoods = await foodCollection.find({ status: "available" }).toArray();
