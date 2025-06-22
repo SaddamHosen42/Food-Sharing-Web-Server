@@ -59,6 +59,13 @@ async function run() {
             const result = await foodCollection.updateOne(query, updateDoc, options);
             res.send(result);
         });
+        //delete a food item by id
+        app.delete('/foods/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await foodCollection.deleteOne(query);
+            res.send(result);
+        });
 
         //get only available food items
         app.get('/available-foods', async (req, res) => {
