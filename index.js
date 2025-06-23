@@ -45,6 +45,13 @@ const verifyJWT =async (req, res, next) => {
     }
 }
 
+const verifyEmail=(req, res, next) => {
+    if(req.query.email !== req.decoded.email){
+        return res.status(403).send({ message: 'Forbidden access' });
+    }
+    next();
+}
+
 async function run() {
     try {
 
@@ -59,13 +66,8 @@ async function run() {
         });
 
         //get all food items and get added by user
-        app.get('/foods',verifyJWT, async (req, res) => {
+        app.get('/foods',verifyJWT,verifyEmail, async (req, res) => {
             const email = req.query.email;
-           
-            if(email!== req.decoded.email){
-                return res.status(403).send({ message: 'Forbidden access' });
-            }
-            
             const query = {};
             if (email) {
                 query.donorEmail = email;
