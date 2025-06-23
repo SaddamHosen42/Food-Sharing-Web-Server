@@ -148,7 +148,7 @@ async function run() {
         });
 
         //get all food requests by requester email
-        app.get('/food-requests', async (req, res) => {
+        app.get('/food-requests',verifyJWT,verifyEmail, async (req, res) => {
             const email = req.query.email;
             const query = {};
             if (email) {
