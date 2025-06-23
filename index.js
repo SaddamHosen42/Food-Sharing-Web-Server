@@ -37,10 +37,10 @@ async function run() {
         app.get('/foods', async (req, res) => {
             const email = req.query.email;
             //console.log(`Querying foods for email: ${email}`);
-            
+
             const query = {};
             if (email) {
-                query.donorEmail = email; 
+                query.donorEmail = email;
             }
             const foods = await foodCollection.find(query).toArray();
             res.send(foods);
@@ -71,6 +71,18 @@ async function run() {
         app.get('/available-foods', async (req, res) => {
             const availableFoods = await foodCollection.find({ status: "available" }).toArray();
             res.send(availableFoods);
+        });
+        //get only 6 available food items
+        app.get('/featured-foods', async (req, res) => {
+
+            const featuredFoods = await foodCollection
+                .find({ status: "available" })
+                .sort({ quantity: -1 }) // বেশি quantity আগে
+                .limit(6)
+                .toArray();
+
+            res.send(featuredFoods);
+
         });
 
         //get one food item by id
@@ -108,7 +120,7 @@ async function run() {
         //get all food requests by requester email
         app.get('/food-requests', async (req, res) => {
             const email = req.query.email;
-            const query={};
+            const query = {};
             if (email) {
                 query.requesterEmail = email; // Filter by email if provided
             }
@@ -116,7 +128,7 @@ async function run() {
             res.send(foodRequests);
         });
 
-     
+
 
         // Send a ping to confirm a successful connection
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
