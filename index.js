@@ -4,8 +4,8 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 const app = express();
 
-const port = process.env.PORT || 5000;
 const admin = require("firebase-admin");
+const port = process.env.PORT || 5000;
 
 const decoded=Buffer.from(process.env.FB_SERCICE_KEY, 'base64').toString('utf8');
 const serviceAccount = JSON.parse(decoded);
@@ -24,8 +24,6 @@ const client = new MongoClient(uri, {
         deprecationErrors: true,
     }
 });
-
-
 
 
 
@@ -78,7 +76,6 @@ async function run() {
         app.get('/foods',verifyJWT,verifyEmail, async (req, res) => {
       
             const email = req.query.email;
-            
             
             const query = {};
             if (email) {
