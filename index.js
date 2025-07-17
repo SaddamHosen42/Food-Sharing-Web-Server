@@ -42,6 +42,8 @@ const verifyJWT =async (req, res, next) => {
     try {
         const decoded = await admin.auth().verifyIdToken(token);
         req.decoded = decoded;
+
+       // console.log('Decoded token:', decoded);
         next();
     } catch (error) {
         res.status(401).send({ message: 'Unauthorized access' });
@@ -49,6 +51,10 @@ const verifyJWT =async (req, res, next) => {
 }
 
 const verifyEmail=(req, res, next) => {
+
+   // console.log(req.query.email, req.decoded.email);
+    
+   
     if(req.query.email !== req.decoded.email){
         return res.status(403).send({ message: 'Forbidden access' });
     }
@@ -70,7 +76,10 @@ async function run() {
 
         //get all food items and get added by user
         app.get('/foods',verifyJWT,verifyEmail, async (req, res) => {
+      
             const email = req.query.email;
+            
+            
             const query = {};
             if (email) {
                 query.donorEmail = email;
@@ -190,4 +199,4 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
-})
+})  
