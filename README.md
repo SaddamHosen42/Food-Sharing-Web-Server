@@ -44,3 +44,54 @@ mongodb
 jsonwebtoken
 firebase-admin
 cookie-parser
+```
+
+## 🚀 Setup Instructions
+
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB database
+- Firebase project with Admin SDK credentials
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/SaddamHosen42/Food-Sharing-Web-Server.git
+   cd Food-Sharing-Web-Server
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup**
+   Create a `.env` file in the root directory:
+   ```env
+   DB_USER=your_mongodb_username
+   DB_PASS=your_mongodb_password
+   ACCESS_TOKEN_SECRET=your_jwt_secret_key
+   ```
+
+4. **Firebase Admin SDK Setup**
+   - Go to your Firebase Console
+   - Navigate to Project Settings > Service Accounts
+   - Generate a new private key
+   - Download the JSON file
+   - Rename it to `firebase-adminsdk.json` and place it in the root directory
+   - **Important:** This file contains sensitive credentials and should never be committed to version control
+
+5. **Run the server**
+   ```bash
+   npm start
+   ```
+
+The server will start on the configured port (default: 5000).
+
+### 🔒 Security Notes
+
+- The `firebase-adminsdk.json` file is already included in `.gitignore`
+- Never commit actual credentials to version control
+- Use environment variables for sensitive data
+- A template file `firebase-adminsdk.template.json` is provided as reference
