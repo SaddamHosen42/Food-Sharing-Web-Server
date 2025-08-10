@@ -117,7 +117,7 @@ async function run() {
             const featuredFoods = await foodCollection
                 .find({ status: "available" })
                 .sort({ quantity: -1 }) // বেশি quantity আগে
-                .limit(6)
+                .limit(8)
                 .toArray();
 
             res.send(featuredFoods);
